@@ -14,7 +14,7 @@ import java.time.Duration;
 
 public class ArticlePage {
     private AppiumDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait;
 
     @AndroidFindBy(id = "view_page_title_text")
     private WebElement articleTitle;
@@ -28,11 +28,12 @@ public class ArticlePage {
     @AndroidFindBy(id = "content_text")
     private WebElement contentText;
 
-    @AndroidFindBy(id = "some_scroll_element")  // Placeholder for scroll target, adjust based on app
+    @AndroidFindBy(id = "some_scroll_element")
     private WebElement scrollTarget;
 
     public ArticlePage(AppiumDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
@@ -59,11 +60,14 @@ public class ArticlePage {
 
     public void scrollToContent() {
         TouchAction touchAction = new TouchAction(driver);
-        touchAction.press(PointOption.point(driver.manage().window().getSize().getWidth() / 2, driver.manage().window().getSize().getHeight()))
+        int width = driver.manage().window().getSize().getWidth();
+        int height = driver.manage().window().getSize().getHeight();
+        touchAction.press(PointOption.point(width / 2, height))
                 .waitAction(WaitOptions.waitOptions(Duration.ofMillis(1000)))
-                .moveTo(PointOption.point(driver.manage().window().getSize().getWidth() / 2, driver.manage().window().getSize().getHeight() / 2))
+                .moveTo(PointOption.point(width / 2, height / 2))
                 .release()
                 .perform();
         wait.until(ExpectedConditions.visibilityOf(scrollTarget));
     }
 }
+

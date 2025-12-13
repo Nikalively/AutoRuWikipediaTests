@@ -35,19 +35,19 @@ public class AutoRuWebTests {
     @Test
     void testNavigateToCatalog() {
         homePage.navigateToCatalog();
-        assertEquals("Каталог", homePage.getPageTitle().trim());
+        assertEquals("Catalog", homePage.getPageTitle().trim());
     }
 
     @Test
     void testNavigateToNewCars() {
         homePage.navigateToNewCars();
-        assertTrue(homePage.getPageTitle().contains("Новые автомобили"));
+        assertTrue(homePage.getPageTitle().contains("New cars"));
     }
 
     @Test
     void testNavigateToUsedCars() {
         homePage.navigateToUsedCars();
-        assertTrue(homePage.getPageTitle().contains("Б/у автомобили"));
+        assertTrue(homePage.getPageTitle().contains("Used cars"));
     }
 
     @ParameterizedTest
@@ -73,7 +73,7 @@ public class AutoRuWebTests {
     @Test
     void testInvalidSearch() {
         homePage.searchCar("NonExistentCar123");
-        assertTrue(searchResultsPage.getResultsCount() == 0 || driver.getPageSource().contains("Ничего не найдено"));
+        assertTrue(searchResultsPage.getResultsCount() == 0 || driver.getPageSource().contains("Nothing found"));
     }
 
     @Test
@@ -85,9 +85,7 @@ public class AutoRuWebTests {
     @Test
     void testSearchWithPriceFilter() {
         homePage.searchCar("BMW");
-        driver.findElement(By.cssSelector("select[data-name='PriceTo']")).click();
-        driver.findElement(By.cssSelector("option[value='5000000']")).click();
-        driver.findElement(By.cssSelector("button[data-name='ApplyFilters']")).click();
+        searchResultsPage.addPriceFilter();
         assertTrue(searchResultsPage.getResultsCount() > 0);
     }
 

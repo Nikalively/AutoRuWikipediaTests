@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SearchResultsPage {
     private WebDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait;
 
     @FindBy(css = ".ListingItem")
     private List<WebElement> resultsList;
@@ -25,8 +25,15 @@ public class SearchResultsPage {
     @FindBy(css = "button[data-name='ApplyFilters']")
     private WebElement applyFiltersButton;
 
+    @FindBy(css = "select[data-name='PriceTo']")
+    private WebElement priceToFilter;
+
+    @FindBy(css = "option[value='5000000']")
+    private WebElement priceOption;
+
     public SearchResultsPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
@@ -42,4 +49,13 @@ public class SearchResultsPage {
         applyFiltersButton.click();
         wait.until(ExpectedConditions.invisibilityOfElementLocated(org.openqa.selenium.By.cssSelector(".Loader")));
     }
+
+    public void addPriceFilter() {
+        wait.until(ExpectedConditions.elementToBeClickable(priceToFilter));
+        priceToFilter.click();
+        priceOption.click();
+        applyFiltersButton.click();
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(org.openqa.selenium.By.cssSelector(".Loader")));
+    }
 }
+

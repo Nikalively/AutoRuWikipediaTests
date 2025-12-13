@@ -10,7 +10,7 @@ import java.time.Duration;
 
 public class HomePage {
     private WebDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait;
 
     @FindBy(css = "a[data-qa='header-category-menu']")
     private WebElement catalogLink;
@@ -35,6 +35,7 @@ public class HomePage {
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
@@ -74,3 +75,4 @@ public class HomePage {
         }
     }
 }
+

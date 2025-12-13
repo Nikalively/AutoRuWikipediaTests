@@ -11,7 +11,7 @@ import java.time.Duration;
 
 public class WikipediaHomePage {
     private AppiumDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait;
 
     @AndroidFindBy(id = "search_menu_text")
     private WebElement searchButton;
@@ -22,8 +22,12 @@ public class WikipediaHomePage {
     @AndroidFindBy(id = "search_close_btn")
     private WebElement closeSearchButton;
 
+    @AndroidFindBy(id = "search_container")
+    private WebElement searchContainer;
+
     public WikipediaHomePage(AppiumDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
@@ -41,5 +45,10 @@ public class WikipediaHomePage {
     public void closeSearch() {
         wait.until(ExpectedConditions.elementToBeClickable(closeSearchButton));
         closeSearchButton.click();
+    }
+
+    public void selectFirstSearchResult() {
+        wait.until(ExpectedConditions.visibilityOf(searchContainer));
+        searchContainer.findElement(org.openqa.selenium.By.xpath("./android.widget.TextView[1]")).click();
     }
 }

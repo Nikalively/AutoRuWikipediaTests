@@ -33,7 +33,8 @@ public class WikipediaMobileTests {
 
     @Test
     void testAppLaunch() {
-        assertTrue(homePage.openSearch() != null);
+        homePage.openSearch();
+        assertTrue(homePage.enterSearchQuery("Test") != null);
     }
 
     @ParameterizedTest
@@ -41,7 +42,7 @@ public class WikipediaMobileTests {
     void testSearchArticle(String query) {
         homePage.openSearch();
         homePage.enterSearchQuery(query);
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         assertTrue(articlePage.getArticleTitle().toLowerCase().contains(query.toLowerCase()));
     }
 
@@ -49,7 +50,7 @@ public class WikipediaMobileTests {
     void testArticleContentVisibility() {
         homePage.openSearch();
         homePage.enterSearchQuery("Java");
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         assertTrue(articlePage.isContentVisible());
     }
 
@@ -57,7 +58,7 @@ public class WikipediaMobileTests {
     void testSwitchLanguage() {
         homePage.openSearch();
         homePage.enterSearchQuery("Java");
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         articlePage.switchToEnglish();
         assertEquals("Java", articlePage.getArticleTitle().trim());
     }
@@ -75,7 +76,7 @@ public class WikipediaMobileTests {
         articlePage.switchToEnglish();
         homePage.openSearch();
         homePage.enterSearchQuery("Programming");
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         assertTrue(articlePage.getArticleTitle().contains("Programming"));
     }
 
@@ -83,7 +84,7 @@ public class WikipediaMobileTests {
     void testScrollInArticle() {
         homePage.openSearch();
         homePage.enterSearchQuery("Java");
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         articlePage.scrollToContent();
         assertTrue(articlePage.isContentVisible());
     }
@@ -92,9 +93,10 @@ public class WikipediaMobileTests {
     void testLanguageSwitchAfterSearch() {
         homePage.openSearch();
         homePage.enterSearchQuery("Python");
-        driver.findElement(By.id("search_container")).findElement(By.xpath("//android.widget.TextView")).click();
+        homePage.selectFirstSearchResult();
         articlePage.switchToEnglish();
         assertTrue(articlePage.getArticleTitle().contains("Python"));
     }
 }
+
 
